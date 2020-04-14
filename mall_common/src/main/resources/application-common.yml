@@ -1,0 +1,4 @@
+jwt:
+  config:
+    key: mall_key_2020_4_14
+    ttl: 3600000
