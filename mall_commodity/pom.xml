@@ -9,19 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mall_apply</artifactId>
+    <artifactId>mall_commodity</artifactId>
 
     <dependencies>
         <dependency>
-            <artifactId>mall_user</artifactId>
-            <groupId>com.yaqiwe</groupId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <artifactId>mall_commodity</artifactId>
+            <artifactId>mall_common</artifactId>
             <groupId>com.yaqiwe</groupId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>

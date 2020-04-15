@@ -33,8 +33,8 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public Resoult login(@RequestParam String adminName,@RequestParam String password){
-        Admin admin= adminService.login(adminName,password);
+    public Resoult login(@RequestBody Admin user){
+        Admin admin= adminService.login(user.getAdminName(),user.getPassword());
         String token= jwtUtil.createJWT(admin.getId(),admin.getAdminName(),admin.getRoles());
         Map<String,Object> amdinInfo=new HashMap<>();
         amdinInfo.put("adminName",admin.getAdminName());

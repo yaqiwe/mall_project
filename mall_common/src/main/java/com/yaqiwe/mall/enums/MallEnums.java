@@ -16,6 +16,7 @@ public enum MallEnums {
     PARAMETER_NOT_PRESENT(10003,"请传递相应的参数"),
     NOT_SUPPORTED(10004,"请求方式错误"),
     NO_PERMISSION(10005,"权限不足"),
+    TYPE_MISMATCH(10006,"参数类型错误"),
 
     USER_EXIST(20001,"用户账号已存在"),
     USER_LOGIN_ERROE(20002,"用户名或密码错误"),

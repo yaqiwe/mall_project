@@ -27,6 +27,7 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
         PathList.add("/user/login");  //登录
         PathList.add("/user/registe");    //注册
         PathList.add("/admin/login");    //管理员登录
+        PathList.add("/sort");    //获取所有商品类别
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(PathList);

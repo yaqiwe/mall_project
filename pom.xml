@@ -7,6 +7,7 @@
         <module>mall_common</module>
         <module>mall_apply</module>
         <module>mall_user</module>
+        <module>mall_commodity</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

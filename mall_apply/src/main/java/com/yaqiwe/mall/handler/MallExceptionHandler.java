@@ -10,6 +10,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -51,6 +52,11 @@ public class MallExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Resoult httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){
         return ResoultUtil.error(MallEnums.NOT_SUPPORTED);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public Resoult methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e){
+        return ResoultUtil.error(MallEnums.TYPE_MISMATCH);
     }
     /**
      * 单个参数校验
