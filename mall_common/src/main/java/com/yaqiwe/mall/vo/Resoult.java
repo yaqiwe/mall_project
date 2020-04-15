@@ -1,5 +1,6 @@
 package com.yaqiwe.mall.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -15,5 +16,6 @@ public class Resoult <T> {
 
     private Integer code;
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private T data;
 }

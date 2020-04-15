@@ -36,7 +36,15 @@ public interface CommSortService {
 
     /**
      * 查询所有标签列表
+     * 按照Id倒序
      * @return
      */
     List<CommSort> findAll();
+
+    /**
+     * 根据Id查询类别
+     * @param sortId
+     * @return
+     */
+    CommSort findById(Integer sortId);
 }

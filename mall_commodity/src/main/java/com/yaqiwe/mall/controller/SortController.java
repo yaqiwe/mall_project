@@ -2,6 +2,7 @@ package com.yaqiwe.mall.controller;
 
 import com.yaqiwe.mall.entity.CommLabel;
 import com.yaqiwe.mall.entity.CommSort;
+import com.yaqiwe.mall.enums.MallEnums;
 import com.yaqiwe.mall.service.CommLabelService;
 import com.yaqiwe.mall.service.CommSortService;
 import com.yaqiwe.mall.util.ResoultUtil;
@@ -40,7 +41,7 @@ public class SortController {
             sortService.deleteSort(sortId);
             return ResoultUtil.success("成功删除商品类别");
         }
-        return ResoultUtil.success("请删除类别下所有标签后重试");
+        return ResoultUtil.error(MallEnums.LABEL_NOT_NULL);
     }
 
     @PutMapping("/update")

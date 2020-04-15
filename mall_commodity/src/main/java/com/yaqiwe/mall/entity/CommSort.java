@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "comm_sort")
 public class CommSort {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

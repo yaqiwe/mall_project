@@ -21,6 +21,9 @@ public enum MallEnums {
     USER_EXIST(20001,"用户账号已存在"),
     USER_LOGIN_ERROE(20002,"用户名或密码错误"),
     ADMIN_EXIST(20003,"管理员账户已存在"),
+
+    LABEL_NOT_NULL(30001,"请删除类别下所有标签后重试"),
+    SORT_IS_NULL(30002,"类别不存在"),
     ;
 
     private Integer code;

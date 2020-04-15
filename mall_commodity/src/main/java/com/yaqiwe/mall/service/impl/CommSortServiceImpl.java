@@ -8,9 +8,11 @@ import com.yaqiwe.mall.service.CommSortService;
 import com.yaqiwe.mall.util.CheckAuthority;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author yaqiwe
@@ -58,7 +60,17 @@ public class CommSortServiceImpl implements CommSortService {
 
     @Override
     public List<CommSort> findAll() {
-        return sortRepository.findAll();
+        Sort sort=Sort.by(Sort.Direction.DESC,"id");
+        return sortRepository.findAll(sort);
+    }
+
+    @Override
+    public CommSort findById(Integer sortId) {
+        Optional<CommSort> byId = sortRepository.findById(sortId);
+        if(byId.isPresent()){
+            return byId.get();
+        }
+        return null;
     }
 
 
