@@ -1,5 +1,6 @@
 package com.yaqiwe.mall.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yaqiwe.mall.entity.CommSort;
 import com.yaqiwe.mall.enums.MallEnums;
 import com.yaqiwe.mall.exception.MallException;
@@ -9,7 +10,9 @@ import com.yaqiwe.mall.util.CheckAuthority;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +31,11 @@ public class CommSortServiceImpl implements CommSortService {
     @Autowired
     CheckAuthority checkAuthority;
 
+    @Autowired
+    RedisTemplate<String,String> redisTemplate;
+
+    private final String SortRedis="SortList";
+
     @Override
     public void addSort(String sort) {
         if(!checkAuthority.checkAdmin()){
@@ -36,6 +44,7 @@ public class CommSortServiceImpl implements CommSortService {
         CommSort commSort=new CommSort();
         commSort.setSort(sort);
         sortRepository.save(commSort);
+        redisTemplate.delete(SortRedis);
     }
 
     @Override
@@ -44,6 +53,7 @@ public class CommSortServiceImpl implements CommSortService {
             throw new MallException(MallEnums.NO_PERMISSION);
         }
         sortRepository.deleteById(sortId);
+        redisTemplate.delete(SortRedis);
     }
 
     @Override
@@ -51,17 +61,27 @@ public class CommSortServiceImpl implements CommSortService {
         if(!checkAuthority.checkAdmin()){
             throw new MallException(MallEnums.NO_PERMISSION);
         }
-        log.info("CommSortServiceImpl update sortId:{}  sort:{}",sortId,sort);
+//        log.info("CommSortServiceImpl update sortId:{}  sort:{}",sortId,sort);
         CommSort commSort=new CommSort();
         commSort.setId(sortId);
         commSort.setSort(sort);
         sortRepository.save(commSort);
+        redisTemplate.delete(SortRedis);
     }
 
     @Override
     public List<CommSort> findAll() {
-        Sort sort=Sort.by(Sort.Direction.DESC,"id");
-        return sortRepository.findAll(sort);
+        String json=redisTemplate.opsForValue().get(SortRedis);
+        if(!StringUtils.isEmpty(json)){
+            List<CommSort> sorts=JSONObject.parseArray(json,CommSort.class);
+            return sorts;
+        }else {
+            Sort sort = Sort.by(Sort.Direction.DESC, "id");
+            List<CommSort> sorts = sortRepository.findAll(sort);
+            json = JSONObject.toJSONString(sorts);
+            redisTemplate.opsForValue().set(SortRedis,json);
+            return sorts;
+        }
     }
 
     @Override

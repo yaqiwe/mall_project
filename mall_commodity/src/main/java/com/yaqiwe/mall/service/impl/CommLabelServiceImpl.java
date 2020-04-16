@@ -1,5 +1,6 @@
 package com.yaqiwe.mall.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yaqiwe.mall.entity.CommLabel;
 import com.yaqiwe.mall.enums.MallEnums;
 import com.yaqiwe.mall.exception.MallException;
@@ -8,10 +9,10 @@ import com.yaqiwe.mall.service.CommLabelService;
 import com.yaqiwe.mall.util.CheckAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -28,6 +29,11 @@ public class CommLabelServiceImpl implements CommLabelService {
     @Autowired
     CheckAuthority checkAuthority;
 
+    @Autowired
+    RedisTemplate<String,String> redisTemplate;
+
+    private final String LabekRedis="LabelList";
+
     @Override
     public List<CommLabel> findBySortId(Integer sortId) {
         return labelRepository.findBySortId(sortId);
@@ -42,13 +48,22 @@ public class CommLabelServiceImpl implements CommLabelService {
         commLabel.setLabel(label);
         commLabel.setSortId(sortId);
         labelRepository.save(commLabel);
+        redisTemplate.delete(LabekRedis);
     }
 
     @Override
     public List<CommLabel> findAll() {
-        Sort sort=Sort.by(Sort.Direction.DESC,"sortId");
-        List<CommLabel> labels = labelRepository.findAll(sort);
-        return labels;
+        String json=redisTemplate.opsForValue().get(LabekRedis);
+        if(!StringUtils.isEmpty(json)){
+            List<CommLabel> labels=JSONObject.parseArray(json,CommLabel.class);
+            return labels;
+        }else {
+            Sort sort = Sort.by(Sort.Direction.DESC, "sortId");
+            List<CommLabel> labels = labelRepository.findAll(sort);
+            json = JSONObject.toJSONString(labels);
+            redisTemplate.opsForValue().set(LabekRedis,json);
+            return labels;
+        }
     }
 
     @Override
@@ -61,6 +76,7 @@ public class CommLabelServiceImpl implements CommLabelService {
         commLabel.setSortId(sortId);
         commLabel.setLabel(label);
         labelRepository.save(commLabel);
+        redisTemplate.delete(LabekRedis);
     }
 
     @Override
@@ -69,6 +85,7 @@ public class CommLabelServiceImpl implements CommLabelService {
             throw new MallException(MallEnums.NO_PERMISSION);
         }
         labelRepository.deleteById(labelId);
+        redisTemplate.delete(LabekRedis);
     }
 
 }

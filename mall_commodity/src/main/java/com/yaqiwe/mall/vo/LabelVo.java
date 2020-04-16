@@ -3,6 +3,7 @@ package com.yaqiwe.mall.vo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * 标签返回格式
  */
 @Data
-public class LabelVo {
+public class LabelVo implements Serializable {
 
     /*类别Id*/
     @JsonProperty("sortId")

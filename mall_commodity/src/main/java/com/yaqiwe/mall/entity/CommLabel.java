@@ -4,6 +4,7 @@ import lombok.Data;
 import org.omg.CORBA.INTERNAL;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @Author yaqiwe
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "comm_label")
-public class CommLabel {
+public class CommLabel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

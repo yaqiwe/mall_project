@@ -3,6 +3,7 @@ package com.yaqiwe.mall.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @Author yaqiwe
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "comm_sort")
-public class CommSort {
+public class CommSort implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
