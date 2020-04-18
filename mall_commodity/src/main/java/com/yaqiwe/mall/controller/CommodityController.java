@@ -9,6 +9,7 @@ import com.yaqiwe.mall.service.CommLabelService;
 import com.yaqiwe.mall.service.CommodityService;
 import com.yaqiwe.mall.util.CheckAuthority;
 import com.yaqiwe.mall.util.ResoultUtil;
+import com.yaqiwe.mall.vo.CommodityInfoVo;
 import com.yaqiwe.mall.vo.CommodityVo;
 import com.yaqiwe.mall.vo.Resoult;
 import org.springframework.beans.BeanUtils;
@@ -46,16 +47,15 @@ public class CommodityController {
         }
         List<CommLabel> byId = labelService.findById(dto.getLabel());
         List<Integer> labelId=byId.stream().map(c->c.getId()).collect(Collectors.toList());
-        Commodity commodity=new Commodity();
-        BeanUtils.copyProperties(dto,commodity);
-        commodity.setIcon(dto.getIconList());
-        commodity.setLabel(labelId);
-        commodityService.addCommodity(commodity);
+        dto.setLabel(labelId);
+        commodityService.addCommodity(dto.dotToCommodity(dto));
         return ResoultUtil.success("添加商品成功");
     }
 
     @GetMapping("/getComBylabel")
-    public Resoult getComByLabel(@RequestParam Integer page,@RequestParam Integer size,@RequestParam Integer LabelId){
+    public Resoult getComByLabel(@RequestParam(value = "page") Integer page,
+                                 @RequestParam(value = "size")  Integer size,
+                                 @RequestParam(value = "LabelId")  Integer LabelId){
         List<Commodity> commodityList=commodityService.getComByLabel(page,size,LabelId);
         List<CommodityVo> voList=new ArrayList<>();
         for (Commodity commodity : commodityList) {
@@ -65,5 +65,39 @@ public class CommodityController {
             voList.add(vo);
         }
         return ResoultUtil.success(voList);
+    }
+
+    @GetMapping("/getCommodity")
+    public Resoult getCommodity(@RequestParam String comId){
+        Commodity commodity= commodityService.getCommodity(comId);
+        if(commodity!=null){
+            CommodityInfoVo vo=new CommodityInfoVo();
+            BeanUtils.copyProperties(commodity,vo);
+            vo.setIconList(commodity.getIcon());
+            return ResoultUtil.success(vo);
+        }else {
+            return ResoultUtil.error(MallEnums.COMMODITY_NULL);
+        }
+    }
+
+    @DeleteMapping("/deleteById")
+    public Resoult deleteById(@RequestParam String comId){
+        if(!checkAuthority.checkAdmin()){
+            throw new MallException(MallEnums.NO_PERMISSION);
+        }
+        commodityService.deleteById(comId);
+        return ResoultUtil.success("删除商品成功");
+    }
+
+    @PutMapping("/update")
+    public Resoult update(@RequestBody @Validated CommodityDto dto){
+        if(!checkAuthority.checkAdmin()){
+            throw new MallException(MallEnums.NO_PERMISSION);
+        }
+        List<CommLabel> byId = labelService.findById(dto.getLabel());
+        List<Integer> labelId=byId.stream().map(c->c.getId()).collect(Collectors.toList());
+        dto.setLabel(labelId);
+        commodityService.update(dto.dotToCommodity(dto));
+        return ResoultUtil.success("更新商品成功");
     }
 }

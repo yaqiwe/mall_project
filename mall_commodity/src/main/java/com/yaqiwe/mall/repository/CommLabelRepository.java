@@ -14,5 +14,5 @@ public interface CommLabelRepository extends JpaRepository<CommLabel,Integer> {
 
     List<CommLabel> findBySortId(Integer sortId);
 
-    List<CommLabel> findByIdIn(Integer... id);
+    List<CommLabel> findByIdIn(List<Integer> id);
 }

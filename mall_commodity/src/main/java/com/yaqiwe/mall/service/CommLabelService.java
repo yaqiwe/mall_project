@@ -56,5 +56,5 @@ public interface CommLabelService {
      * @param id
      * @return
      */
-    List<CommLabel> findById(Integer... id);
+    List<CommLabel> findById(List<Integer> id);
 }

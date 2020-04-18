@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface CommodityRepository extends JpaRepository<Commodity,String> {
 
-    @Query(nativeQuery = true,value = "select * FROM commodity WHERE label LIKE ? LIMIT ?,? ")
+    @Query(nativeQuery = true,value = "select id,comm_name,icon,stock,label,price,freight,details,type " +
+            "FROM commodity " +
+            "WHERE label LIKE ? LIMIT ?,? ")
     List<Commodity> findByLabel(String laabeId, Integer startLimit, Integer endLimit);
 }

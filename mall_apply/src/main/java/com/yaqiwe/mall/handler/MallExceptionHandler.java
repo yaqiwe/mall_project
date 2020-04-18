@@ -39,15 +39,15 @@ public class MallExceptionHandler {
     }
 
 
-//    @ExceptionHandler(MissingServletRequestParameterException.class)
-//    public Resoult missingServletRequestParameterException(MissingServletRequestParameterException e){
-//        return ResoultUtil.error(MallEnums.PARAMETER_NOT_PRESENT);
-//    }
-//
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public Resoult httpMessageNotReadableException(HttpMessageNotReadableException e){
-//        return ResoultUtil.error(MallEnums.PARAMETER_NOT_PRESENT);
-//    }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public Resoult missingServletRequestParameterException(MissingServletRequestParameterException e){
+        return ResoultUtil.error(MallEnums.PARAMETER_NOT_PRESENT);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public Resoult httpMessageNotReadableException(HttpMessageNotReadableException e){
+        return ResoultUtil.error(MallEnums.PARAMETER_NOT_PRESENT);
+    }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Resoult httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){

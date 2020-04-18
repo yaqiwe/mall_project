@@ -90,7 +90,7 @@ public class CommLabelServiceImpl implements CommLabelService {
     }
 
     @Override
-    public List<CommLabel> findById(Integer... id) {
+    public List<CommLabel> findById(List<Integer> id) {
         return labelRepository.findByIdIn(id);
     }
 
