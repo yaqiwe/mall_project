@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author yaqiwe
@@ -79,7 +80,7 @@ public class CommSortServiceImpl implements CommSortService {
             Sort sort = Sort.by(Sort.Direction.DESC, "id");
             List<CommSort> sorts = sortRepository.findAll(sort);
             json = JSONObject.toJSONString(sorts);
-            redisTemplate.opsForValue().set(SortRedis,json);
+            redisTemplate.opsForValue().set(SortRedis,json,3, TimeUnit.HOURS);
             return sorts;
         }
     }

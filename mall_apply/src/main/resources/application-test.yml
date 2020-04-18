@@ -1,0 +1,23 @@
+spring:
+  #链接数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.0.104:3306/mall_project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+  #数据库校验模式和是否控制台打印sql语句
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  #返回的时间格式和时区
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  ##项目总路径
+  #server:
+  #  servlet:
+  #    context-path: /mall_project
+  redis:
+    host: 192.168.0.104
+    port: 6379

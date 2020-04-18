@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author yaqiwe
@@ -61,7 +62,7 @@ public class CommLabelServiceImpl implements CommLabelService {
             Sort sort = Sort.by(Sort.Direction.DESC, "sortId");
             List<CommLabel> labels = labelRepository.findAll(sort);
             json = JSONObject.toJSONString(labels);
-            redisTemplate.opsForValue().set(LabekRedis,json);
+            redisTemplate.opsForValue().set(LabekRedis,json,3, TimeUnit.HOURS);
             return labels;
         }
     }
@@ -86,6 +87,11 @@ public class CommLabelServiceImpl implements CommLabelService {
         }
         labelRepository.deleteById(labelId);
         redisTemplate.delete(LabekRedis);
+    }
+
+    @Override
+    public List<CommLabel> findById(Integer... id) {
+        return labelRepository.findByIdIn(id);
     }
 
 }

@@ -50,4 +50,11 @@ public interface CommLabelService {
      * @param labelId
      */
     void deleteLabel(Integer labelId);
+
+    /**
+     * 根据标签Id查询标签
+     * @param id
+     * @return
+     */
+    List<CommLabel> findById(Integer... id);
 }

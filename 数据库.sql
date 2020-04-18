@@ -38,4 +38,15 @@ CREATE TABLE comm_label(
 	PRIMARY KEY(id)
 )COMMENT '商品标签表'
 
-CREATE TABLE commodity()COMMENT '商品信息表'
+CREATE TABLE commodity(
+	id VARCHAR(20) NOT NULL COMMENT'商品ID',
+	comm_name VARCHAR(100) NOT NULL COMMENT '商品名称',
+	icon VARCHAR(1000) NOT NULL COMMENT'商品图片,用;,;分割',
+	stock int(10) NOT NULL COMMENT'商品库存',
+	label VARCHAR(50) NULL COMMENT '商品标签,用;分割',
+	price DECIMAL(9,2) DEFAULT 0 COMMENT '商品价格',
+	freight DECIMAL(9,2) DEFAULT 0 COMMENT '运费',
+	details VARCHAR(3000) NULL COMMENT '商品详情',
+	type VARCHAR(1) DEFAULT 1 COMMENT '商品状态1上架0下架',
+	PRIMARY KEY(id)
+)COMMENT '商品信息表'

@@ -24,6 +24,8 @@ public enum MallEnums {
 
     LABEL_NOT_NULL(30001,"请删除类别下所有标签后重试"),
     SORT_IS_NULL(30002,"类别不存在"),
+
+    COMMODITY_ICON_ERROR(40001,"商品图片不正确"),
     ;
 
     private Integer code;

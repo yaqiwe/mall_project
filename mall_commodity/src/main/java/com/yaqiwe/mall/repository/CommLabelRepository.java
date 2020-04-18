@@ -13,4 +13,6 @@ import java.util.List;
 public interface CommLabelRepository extends JpaRepository<CommLabel,Integer> {
 
     List<CommLabel> findBySortId(Integer sortId);
+
+    List<CommLabel> findByIdIn(Integer... id);
 }
