@@ -77,4 +77,9 @@ public class Commodity {
             this.label+=s+";";
         }
     }
+
+    public void setLabel(String labels) {
+        this.label = labels;
+    }
+
 }

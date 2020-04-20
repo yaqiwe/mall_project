@@ -70,11 +70,16 @@ public class CommodityController {
     @GetMapping("/getCommodity")
     public Resoult getCommodity(@RequestParam String comId){
         Commodity commodity= commodityService.getCommodity(comId);
+
         if(commodity!=null){
-            CommodityInfoVo vo=new CommodityInfoVo();
-            BeanUtils.copyProperties(commodity,vo);
-            vo.setIconList(commodity.getIcon());
-            return ResoultUtil.success(vo);
+            if (checkAuthority.checkAdmin()){   //管理员返回详细信息
+                return ResoultUtil.success(commodity);
+            }else {
+                CommodityInfoVo vo = new CommodityInfoVo();
+                BeanUtils.copyProperties(commodity, vo);
+                vo.setIconList(commodity.getIcon());
+                return ResoultUtil.success(vo);
+            }
         }else {
             return ResoultUtil.error(MallEnums.COMMODITY_NULL);
         }
@@ -89,15 +94,18 @@ public class CommodityController {
         return ResoultUtil.success("删除商品成功");
     }
 
-    @PutMapping("/update")
-    public Resoult update(@RequestBody @Validated CommodityDto dto){
+    @PutMapping("/update/{comId}")
+    public Resoult update(@RequestBody @Validated CommodityDto dto,
+                          @PathVariable String comId){
         if(!checkAuthority.checkAdmin()){
             throw new MallException(MallEnums.NO_PERMISSION);
         }
         List<CommLabel> byId = labelService.findById(dto.getLabel());
         List<Integer> labelId=byId.stream().map(c->c.getId()).collect(Collectors.toList());
         dto.setLabel(labelId);
-        commodityService.update(dto.dotToCommodity(dto));
+        Commodity commodity=dto.dotToCommodity(dto);
+        commodity.setId(comId);
+        commodityService.update(commodity);
         return ResoultUtil.success("更新商品成功");
     }
 }

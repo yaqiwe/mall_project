@@ -62,6 +62,17 @@ public class CommodityServiceImpl implements CommodityService {
         if (StringUtils.isEmpty(commodity.getId())){
             throw new MallException(MallEnums.COMMODITY_IS_NOT_NULL);
         }
-        commodityRepository.save(commodity);
+        Commodity com = getCommodity(commodity.getId());
+        if(com==null){
+            throw new MallException(MallEnums.COMMODITY_NULL);
+        }
+        com.setCommName(commodity.getCommName());
+        com.setIcon(commodity.getIcon());
+        com.setLabel(commodity.getLabel());
+        com.setStock(commodity.getStock());
+        com.setPrice(commodity.getPrice());
+        com.setFreight(commodity.getFreight());
+        com.setDetails(commodity.getDetails());
+        commodityRepository.save(com);
     }
 }
